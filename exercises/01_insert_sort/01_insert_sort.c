@@ -10,7 +10,7 @@ typedef struct {
 void insertion_sort(Student students[], int n) {
     // TODO: 在这里添加你的代码
     
-    int j;
+    int j,i;
     Student FakeStudent;
     for(i=1;i<n;i++)
     { 
