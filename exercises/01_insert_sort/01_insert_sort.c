@@ -10,19 +10,19 @@ typedef struct {
 void insertion_sort(Student students[], int n) {
     // TODO: 在这里添加你的代码
     
-    int j,j;
+    int j;
     Student FakeStudent;
     for(i=1;i<n;i++)
     { 
-        FakeStudent = student[i];
+        FakeStudent = students[i];
         j=i-1;
-        while((j>=0) && (student[j].score < student[i].scode))
+        while((j>=0) && (students[j].score < FakeStudent.score))
         {
-            student[j+1] = student[j];
+            students[j+1] = students[j];
             j--;
 
         }
-        student[j+1] = FakeStudent;
+        students[j+1] = FakeStudent;
     }
 }
 
