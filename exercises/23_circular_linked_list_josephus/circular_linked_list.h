@@ -3,7 +3,7 @@
 
 // 环形单链表节点
 typedef struct Node {
-    int id;             // 节点编号（1..n）
+    int data;           // 节点编号（1..n）
     struct Node* next;  // 指向下一个节点
 } Node;
 

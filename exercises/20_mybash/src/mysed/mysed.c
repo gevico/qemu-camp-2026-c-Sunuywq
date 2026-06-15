@@ -13,8 +13,41 @@ int parse_replace_command(const char* cmd, char** old_str, char** new_str) {
     *old_str = NULL;
     *new_str = NULL;
     
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    // 检查格式是否为 "s/old/new/"
+    if (cmd[0] != 's' || cmd[1] != '/') {
+        return -1;
+    }
+    
+    const char* start = cmd + 2;  // 跳过 's/'
+    
+    // 找到第二个'/'（old_str的终止符）
+    const char* second_slash = strchr(start, '/');
+    if (second_slash == NULL) {
+        return -1;
+    }
+    
+    // 找到第三个'/'（new_str的终止符）
+    const char* third_slash = strchr(second_slash + 1, '/');
+    if (third_slash == NULL) {
+        return -1;
+    }
+    
+    // 分配并复制old_str
+    int old_len = second_slash - start;
+    *old_str = (char*)malloc(old_len + 1);
+    if (!*old_str) return -1;
+    strncpy(*old_str, start, old_len);
+    (*old_str)[old_len] = '\0';
+    
+    // 分配并复制new_str
+    int new_len = third_slash - (second_slash + 1);
+    *new_str = (char*)malloc(new_len + 1);
+    if (!*new_str) {
+        free(*old_str);
+        return -1;
+    }
+    strncpy(*new_str, second_slash + 1, new_len);
+    (*new_str)[new_len] = '\0';
 
     return 0;
 }
@@ -25,8 +58,21 @@ void replace_first_occurrence(char* str, const char* old, const char* new) {
         return;
     }
     
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    // 查找老字符串的位置
+    char* pos = strstr(str, old);
+    if (pos != NULL) {
+        int old_len = strlen(old);
+        int new_len = strlen(new);
+        int remaining_len = strlen(pos + old_len);
+        
+        // 创建临时缓冲区保存替换后的内容
+        char temp[2048];
+        strcpy(temp, pos + old_len);
+        
+        // 复制新字符串
+        strcpy(pos, new);
+        strcpy(pos + new_len, temp);
+    }
 }
 
 int __cmd_mysed(const char* rules, const char* str) {

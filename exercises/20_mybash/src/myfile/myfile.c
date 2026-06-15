@@ -38,8 +38,24 @@ int __cmd_myfile(const char* filename) {
     fflush(stdout);
     printf("filepath: %s\n", filepath);
 
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    fd = open(filepath, O_RDONLY);
+    if (fd < 0) {
+      printf("Cannot open file %s\n", filepath);
+      return 1;
+    }
+
+    if (read(fd, &ehdr, sizeof(Elf64_Ehdr)) != sizeof(Elf64_Ehdr)) {
+      printf("Cannot read ELF header from %s\n", filepath);
+      close(fd);
+      return 1;
+    }
+
+    if (ehdr.e_ident[EI_MAG0] != ELFMAG0 || ehdr.e_ident[EI_MAG1] != ELFMAG1 ||
+        ehdr.e_ident[EI_MAG2] != ELFMAG2 || ehdr.e_ident[EI_MAG3] != ELFMAG3) {
+      printf("%s is not a valid ELF file\n", filepath);
+      close(fd);
+      return 1;
+    }
 
     print_elf_type(ehdr.e_type);
     close(fd);

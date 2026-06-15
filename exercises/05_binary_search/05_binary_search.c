@@ -16,7 +16,22 @@ int n;
 
 int binary_search(const char *target_name) {
     // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    int low = 0;
+    int high = n-1;
+
+    while(low <=high){
+    	int mid = low + (high - low) / 2;
+	int res = strcmp(students[mid].name, target_name);
+	if (res == 0 ){
+		return mid;
+	}
+	else if (res > 0){
+		high = mid -1;
+	}
+	else {
+		low = mid + 1;
+	}
+    }
 }
 
 int main(void) {

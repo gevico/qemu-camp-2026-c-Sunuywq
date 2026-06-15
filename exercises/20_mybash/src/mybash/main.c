@@ -58,8 +58,13 @@ int is_builtin_command(char **args) {
   if (args[0] == NULL)
     return 0;
 
-  // TODO: 在这里添加你的代码
-  // I AM NOT DONE
+  if (strcmp(args[0], "cd") == 0) {
+    execute_cd(args);
+    return 1;
+  } else if (strcmp(args[0], "exit") == 0) {
+    execute_exit();
+    return 1;
+  }
 
   return 0;
 }
@@ -77,8 +82,23 @@ int parse_input(char *input, char **args) {
   while (*buf != '\0' && i < MAX_ARGS - 1) {
       char c = *buf;
 
-        // TODO: 在这里添加你的代码
-        // I AM NOT DONE
+      if (c == '"') {
+        // 切换引号状态
+        in_quotes = !in_quotes;
+      } else if (c == ' ' && !in_quotes) {
+        // 空格（不在引号内）：结束当前参数
+        if (arg_buf_idx > 0) {
+          arg_buf[arg_buf_idx] = '\0';
+          args[i++] = strdup(arg_buf);
+          memset(arg_buf, 0, sizeof(arg_buf));
+          arg_buf_idx = 0;
+        }
+      } else {
+        // 普通字符：加入参数缓冲区
+        if (arg_buf_idx < MAX_INPUT - 1) {
+          arg_buf[arg_buf_idx++] = c;
+        }
+      }
 
       buf++;
   }

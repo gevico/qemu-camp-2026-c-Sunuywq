@@ -12,10 +12,36 @@
 int parse_url(const char* url) {
     int err = 0;
 
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    // 查找 '?' 的位置，获取参数部分
+    const char* params = strchr(url, '?');
+    if (params == NULL) {
+        printf("URL中没有参数\n");
+        return 0;
+    }
+    
+    params++;  // 跳过'?'
+    
+    // 复制参数部分到可修改的缓冲区
+    char buffer[512];
+    strncpy(buffer, params, sizeof(buffer) - 1);
+    buffer[sizeof(buffer) - 1] = '\0';
+    
+    // 使用strtok分割参数
+    char* param = strtok(buffer, "&");
+    while (param != NULL) {
+        // 分割key和value
+        char* equals = strchr(param, '=');
+        if (equals != NULL) {
+            *equals = '\0';  // 终止key字符串
+            char* key = param;
+            char* value = equals + 1;
+            printf("key = %s, value = %s\n", key, value);
+        } else {
+            printf("key = %s, value = \n", param);
+        }
+        param = strtok(NULL, "&");
+    }
 
-exit:
     return err;
 }
 

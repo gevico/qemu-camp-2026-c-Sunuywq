@@ -10,14 +10,46 @@
 
 /* 判断字符 c 是否在分隔符集合 delim 中 */
 static int is_delim(char c, const char *delim) {
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    while (*delim) {
+        if (c == *delim) return 1;
+        delim++;
+    }
+    return 0;
 }
 
 /* 线程安全版本：通过 saveptr 维护调用状态，不使用静态变量 */
 char *strtok_r(char *str, const char *delim, char **saveptr) {
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    if (str) {
+        *saveptr = str;
+    }
+    
+    char *start = *saveptr;
+    if (!start || !*start) return NULL;
+    
+    /* 跳过开头的分隔符 */
+    while (*start && is_delim(*start, delim)) {
+        start++;
+    }
+    
+    if (!*start) {
+        *saveptr = start;
+        return NULL;
+    }
+    
+    /* 找到词的结尾 */
+    char *end = start;
+    while (*end && !is_delim(*end, delim)) {
+        end++;
+    }
+    
+    if (*end) {
+        *end = '\0';
+        *saveptr = end + 1;
+    } else {
+        *saveptr = end;
+    }
+    
+    return start;
 }
 
 int main(void) {

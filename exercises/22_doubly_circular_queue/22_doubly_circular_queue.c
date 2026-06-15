@@ -17,18 +17,28 @@ static link get_last(void) {
 }
 
 static void enqueue_int(int v) {
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    insert(make_node(v));
 }
 
 static int dequeue_int(int *out) {
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    link last = get_last();
+    if (!last) return 0;  // 队列为空
+    
+    if (out) {
+        *out = last->data;
+    }
+    delete(last);
+    free_node(last);
+    return 1;  // 成功
 }
 
 static void print_dequeue_n(int n) {
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    for (int i = 0; i < n; i++) {
+        int val = 0;
+        if (dequeue_int(&val)) {
+            printf("%d ", val);
+        }
+    }
 }
 
 int main(void) {
